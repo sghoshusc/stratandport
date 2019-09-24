@@ -21,7 +21,6 @@ NUM_DAYS_TO_RECALIBRATE = 28 # once a month
 class AllocationStyle(Enum):
   NoAlloc = -1
   UniformAlloc = 0          # Give everyone 'x' risk and let them run till end of time
-  HCTAlloc = 1              # double winners, halve losers every week
   IndividualPnlAlloc = 2    # he who made more money gets more money
   IndividualSharpeAlloc = 3 # he who had better risk normalized pnls, gets more money
   IndividualSortinoAlloc = 4# he who had better risk normalized pnls, gets more money
@@ -158,23 +157,6 @@ class UniformAllocPM(PortfolioManager):
     # Always hand out equal allocation regardless of performance/prediction
     for trader in self.alloc:
       self.alloc[trader] = TOTAL_ALLOCATION/len(self.alloc)
-
-class HCTAllocPM(PortfolioManager):
-  def __init__(self):
-    PortfolioManager.__init__(self)
-    self.style = AllocationStyle.HCTAlloc
-
-  def RecalibrateAllocations(self):
-    for trader in self.alloc:
-      if len(self.traders[trader].trades) >= 2 * NUM_DAYS_TO_RECALIBRATE:
-        scale_factor = 3 if self.traders[trader].LastMonthPnl() > 0 else 0.33
-        new_alloc = min(max(int(self.alloc[trader] * scale_factor), MIN_ALLOCATION), MAX_ALLOCATION)
-        self.alloc[trader] = new_alloc
-
-    # scale allocations so that we are within limits
-    total_allocation = sum(self.alloc.values())
-    for trader in self.alloc:
-      self.alloc[trader] = int((self.alloc[trader] * TOTAL_ALLOCATION) / total_allocation)
 
 class IndividualPnlAllocPM(PortfolioManager):
   def __init__(self):

@@ -53,7 +53,7 @@ shortcode_relative = [
   ['ZW', 'ZC']  # wheat using corn
 ]
 
-portfolio_managers_list = [UniformAllocPM, HCTAllocPM, IndividualPnlAllocPM, IndividualSharpeAllocPM, IndividualSortinoAllocPM, MarkowitzAllocPM, RegimePredictiveAllocPM]
+portfolio_managers_list = [UniformAllocPM, IndividualPnlAllocPM, IndividualSharpeAllocPM, MarkowitzAllocPM]
 # portfolio_managers_list = [UniformAllocPM, RegimePredictiveAllocPM]
 trader_list = [TrendFollowTrader, MeanReversionTrader, RelativeValueTrader, PairsTrader]
 
